@@ -1,24 +1,19 @@
-# market
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+项目名称：乐式商城
+git地址：git@github.com:huxiao11/waimai0204.git
+排   期：
+｜项目名称｜模块排期｜    开发排期    ｜自测排期｜
 
-### Compiles and minifies for production
-```
-npm run build
-```
+｜乐式商城｜首		页｜02.05 - 02.06 ｜     1 h    ｜
 
-### Lints and fixes files
-```
-npm run lint
-```
+｜乐式商城｜分		类｜ 02.07 - 02.08｜     1 h    ｜
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+｜乐式商城｜购  物  车｜ 02.09 - 02.10｜     1 h    ｜
+
+｜乐式商城｜我		的｜ 02.11 - 02.12｜     1 h    ｜
+
+
+
+
+
