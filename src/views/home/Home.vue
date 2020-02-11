@@ -1,104 +1,41 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
-      <home-swiper :banners="banners"/>
-      <recommend-view :recommends="recommends"/>
-      <feature-view/>
-      <tab-control :titles="['流行', '新款', '精选']" 
+      <scroll class="content">
+        <home-swiper :banners="banners"/>
+        <recommend-view :recommends="recommends"/>
+        <feature-view/>
+        <tab-control :titles="['流行', '新款', '精选']" 
                    class="tab-control"
                    @tabClick="tabClick"
                    />
-      <goods-list :goods="showGoods"/>
-      <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li><li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
+        <goods-list :goods="showGoods"/>
+      </scroll>
   </div>
 </template>
 
 <script>
+// 引入公共组件
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
+import Scroll from 'components/common/scroll/Scroll'
 
+// 引入当前页面组件
 import HomeSwiper from './childComps/HomeSwiper'
 import RecommendView from './childComps/RecommendView'
 import FeatureView from './childComps/FeatureView'
 
+// 引入请求数据
 import { getHomeMultidata, getHomeGoods } from 'network/home'
+
 
 export default {
     components: {
       NavBar,
       TabControl,
       GoodsList,
+      Scroll,
       HomeSwiper,
       RecommendView,
       FeatureView, 
@@ -159,7 +96,8 @@ export default {
            this.goods[type].page += 1
         })
       }
-    }
+    },
+ 
 }
 </script>
 
@@ -170,7 +108,9 @@ export default {
     此时给home主页设置padding-top，可让轮播图完全显示
 */
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
+  /* vh：视口 */
+  height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -185,5 +125,11 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+}
+/* 设置scroll滚动高度 */
+.content {
+  height: calc(100% -98px);
+  overflow: hidden;
+  margin-top: 44px;
 }
 </style>
