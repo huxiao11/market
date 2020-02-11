@@ -1,7 +1,7 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
-      <scroll class="home-scroll" ref="scroll">
+      <scroll class="home-scroll" ref="scroll" :probe-type="3" @scroll="contentScroll">
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
         <feature-view/>
@@ -12,7 +12,7 @@
         <goods-list :goods="showGoods"/>
       </scroll>
       <!-- 注意：组件不能直接绑定点击事件！！！得通过.native属性绑定-->
-      <back-top @click.native="backClick"/>
+      <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -53,7 +53,8 @@ export default {
           'new': {page: 0, list: []},
           'sell': {page: 0, list: []}
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false
       }
     },
     computed: {
@@ -89,7 +90,10 @@ export default {
         // 回到顶部
         this.$refs.scroll.scrollTo(0, 0)
       },
-
+      contentScroll(position) {
+        // console.log(position)
+        this.isShowBackTop = (-position.y) > 1000
+      },
       // 网络请求相关方法
       getHomeMultidata() {
         getHomeMultidata().then(res => {
