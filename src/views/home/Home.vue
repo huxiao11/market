@@ -1,7 +1,7 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
-      <scroll class="content">
+      <scroll class="home-scroll" ref="scroll">
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
         <feature-view/>
@@ -11,6 +11,8 @@
                    />
         <goods-list :goods="showGoods"/>
       </scroll>
+      <!-- 注意：组件不能直接绑定点击事件！！！得通过.native属性绑定-->
+      <back-top @click.native="backClick"/>
   </div>
 </template>
 
@@ -20,6 +22,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop'
 
 // 引入当前页面组件
 import HomeSwiper from './childComps/HomeSwiper'
@@ -36,6 +39,7 @@ export default {
       TabControl,
       GoodsList,
       Scroll,
+      BackTop,
       HomeSwiper,
       RecommendView,
       FeatureView, 
@@ -81,6 +85,11 @@ export default {
             break
         }
       },
+      backClick() {
+        // 回到顶部
+        this.$refs.scroll.scrollTo(0, 0)
+      },
+
       // 网络请求相关方法
       getHomeMultidata() {
         getHomeMultidata().then(res => {
@@ -127,8 +136,8 @@ export default {
   top: 44px;
 }
 /* 设置scroll滚动高度 */
-.content {
-  height: calc(100% -98px);
+.home-scroll {
+  height: calc(100% - 93px);
   overflow: hidden;
   margin-top: 44px;
 }

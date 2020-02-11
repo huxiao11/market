@@ -18,6 +18,13 @@ export default {
     mounted() {
         this.scroll = new BScroll (this.$refs.wrapper, {
         })
+        //回到顶部所要调用的方法
+        this.scroll.scrollTo(0, 0)
+    },
+    methods: {
+        scrollTo(x, y, time = 300) {
+            this.scroll.scrollTo(x, y, time)
+        }
     }
 }
 </script>

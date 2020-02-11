@@ -23,7 +23,7 @@
   flex: 1;
   height: 49px;
   text-align: center;
-  margin-top: 3px;
+  /* margin-top: 3px; */
   font-size: 14px;
 }
 .tab-bar-item img {
