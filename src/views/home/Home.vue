@@ -1,7 +1,13 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
-      <scroll class="home-scroll" ref="scroll" :probe-type="3" @scroll="contentScroll">
+      <scroll class="home-scroll" 
+              ref="scroll" 
+              :probe-type="3" 
+              @scroll="contentScroll"
+              :pull-up-load="true"
+              @pullingUp="loadMore"
+      >
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
         <feature-view/>
@@ -86,14 +92,19 @@ export default {
             break
         }
       },
+      // 回到顶部
       backClick() {
-        // 回到顶部
         this.$refs.scroll.scrollTo(0, 0)
       },
+      // scroll的显示与隐藏
       contentScroll(position) {
-        // console.log(position)
         this.isShowBackTop = (-position.y) > 1000
       },
+      // 加载更多
+      loadMore() {
+        this.getHomeGoods(this.currentType)
+      },
+
       // 网络请求相关方法
       getHomeMultidata() {
         getHomeMultidata().then(res => {
@@ -107,6 +118,8 @@ export default {
           // 利用剩余参数法存储数据！！！
            this.goods[type].list.push(...res.data.list)
            this.goods[type].page += 1
+
+           this.$refs.scroll.finishPullUp()
         })
       }
     },
