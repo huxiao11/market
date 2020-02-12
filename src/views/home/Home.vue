@@ -79,13 +79,28 @@ export default {
       // 在created中拿到的scroll是空的，所以要在mounted中拿
     },
     mounted() {
+
+      const refresh = this.debounce(this.$refs.scroll.refresh, 50)
       // 3、监听item中图片加载完成
       this.$bus.$on('itemImageLoad', () => {
-        this.$refs.scroll.refresh()
+        refresh()
       })
     },
     methods: {
-      // 事件监听相关方法
+      /* 
+        事件监听相关方法 
+      */ 
+      // 防抖
+      debounce(func, delay) {
+        let timer = null
+        return function(...args) {
+          if(timer) clearTimeout(timer)
+
+          timer = setTimeout(() => {
+            func.apply(this, args)
+          }, delay)
+        }
+      },
       tabClick(index) {
         switch(index) {
           case 0:
