@@ -6,7 +6,6 @@
               :probe-type="3" 
               @scroll="contentScroll"
               :pull-up-load="true"
-              @pullingUp="loadMore"
       >
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
@@ -76,6 +75,14 @@ export default {
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+
+      // 在created中拿到的scroll是空的，所以要在mounted中拿
+    },
+    mounted() {
+      // 3、监听item中图片加载完成
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
+      })
     },
     methods: {
       // 事件监听相关方法
@@ -100,10 +107,7 @@ export default {
       contentScroll(position) {
         this.isShowBackTop = (-position.y) > 1000
       },
-      // 加载更多
-      loadMore() {
-        this.getHomeGoods(this.currentType)
-      },
+     
 
       // 网络请求相关方法
       getHomeMultidata() {
@@ -118,8 +122,6 @@ export default {
           // 利用剩余参数法存储数据！！！
            this.goods[type].list.push(...res.data.list)
            this.goods[type].page += 1
-
-           this.$refs.scroll.finishPullUp()
         })
       }
     },

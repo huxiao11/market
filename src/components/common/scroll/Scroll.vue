@@ -38,19 +38,22 @@ export default {
             // console.log(position)
             this.$emit('scroll', position)
         })
-        // 3、监听上拉事件
-        this.scroll.on('pullingUp', () => {
-            this.$emit('pullingUp')
-        })
+        console.log(this.scroll)
+        // 解决滚动区域的bug，图片加载之前和加载之后的高度不同
+        // this.scroll.refresh
     },
     methods: {
         // 滚动到指定的位置！！！！
         scrollTo(x, y, time = 300) {
-            this.scroll.scrollTo(x, y, time)
+            this.scroll && this.scroll.scrollTo(x, y, time)
         },
         // 
         finishPullUp() {
-            this.scroll.finishPullUp()
+            this.scroll && this.scroll.finishPullUp()
+        },
+        //refresh封装
+        refresh() {
+            this.scroll && this.scroll.refresh()
         }
     }
 }
