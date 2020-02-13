@@ -6,6 +6,7 @@
               :probe-type="3" 
               @scroll="contentScroll"
               :pull-up-load="true"
+              @pullingUp="loadMore"
       >
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
@@ -36,6 +37,7 @@ import FeatureView from './childComps/FeatureView'
 
 // 引入请求数据
 import { getHomeMultidata, getHomeGoods } from 'network/home'
+import { debounce } from 'common/utils'
 
 
 export default {
@@ -78,9 +80,9 @@ export default {
 
       // 在created中拿到的scroll是空的，所以要在mounted中拿
     },
-    mounted() {
 
-      const refresh = this.debounce(this.$refs.scroll.refresh, 50)
+    mounted() {
+     const refresh = debounce(this.$refs.scroll.refresh, 50)
       // 3、监听item中图片加载完成
       this.$bus.$on('itemImageLoad', () => {
         refresh()
@@ -90,17 +92,6 @@ export default {
       /* 
         事件监听相关方法 
       */ 
-      // 防抖
-      debounce(func, delay) {
-        let timer = null
-        return function(...args) {
-          if(timer) clearTimeout(timer)
-
-          timer = setTimeout(() => {
-            func.apply(this, args)
-          }, delay)
-        }
-      },
       tabClick(index) {
         switch(index) {
           case 0:
@@ -122,7 +113,10 @@ export default {
       contentScroll(position) {
         this.isShowBackTop = (-position.y) > 1000
       },
-     
+      // 上拉加载更多
+      loadMore() {
+        this.getHomeGoods(this.currentType)
+      },
 
       // 网络请求相关方法
       getHomeMultidata() {
@@ -137,6 +131,9 @@ export default {
           // 利用剩余参数法存储数据！！！
            this.goods[type].list.push(...res.data.list)
            this.goods[type].page += 1
+
+          //  完成上拉加载更多，否则只进行一次加载
+          this.$refs.scroll.finishPullUp()
         })
       }
     },
