@@ -1,20 +1,24 @@
 <template>
   <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
+      <tab-control :titles="['流行', '新款', '精选']" 
+                   class="tab-control"
+                   @tabClick="tabClick"
+                   ref="tabControl"/>  
       <scroll class="home-scroll" 
               ref="scroll" 
               :probe-type="3" 
               @scroll="contentScroll"
               :pull-up-load="true"
-              @pullingUp="loadMore"
-      >
-        <home-swiper :banners="banners"/>
+              @pullingUp="loadMore">
+        <home-swiper :banners="banners" 
+                    @swiperImageLoad="swiperImageLoad"/>
         <recommend-view :recommends="recommends"/>
         <feature-view/>
         <tab-control :titles="['流行', '新款', '精选']" 
                    class="tab-control"
                    @tabClick="tabClick"
-                   />
+                   ref="tabControl"/>          
         <goods-list :goods="showGoods"/>
       </scroll>
       <!-- 注意：组件不能直接绑定点击事件！！！得通过.native属性绑定-->
@@ -61,7 +65,10 @@ export default {
           'sell': {page: 0, list: []}
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0,
+        isTabFixed: false,
+        isShowTabControl: false
       }
     },
     computed: {
@@ -82,11 +89,15 @@ export default {
     },
 
     mounted() {
+      // 1、图片加载完成的事件监听
      const refresh = debounce(this.$refs.scroll.refresh, 50)
-      // 3、监听item中图片加载完成
       this.$bus.$on('itemImageLoad', () => {
         refresh()
       })
+
+      // 2、获取tabControl的offsetTop,组件没有offsetTop的属性，
+        // 所有组件都有$el的属性：用于获取组件中的元素
+          // 在mounted中只是挂载，图片没加载出来，所以得更新后再获取offsetTop
     },
     methods: {
       /* 
@@ -111,11 +122,19 @@ export default {
       },
       // scroll的显示与隐藏
       contentScroll(position) {
+        // 1、判断backTop是否显示
         this.isShowBackTop = (-position.y) > 1000
+
+        // 2、决定tabControl是否吸顶（position：fixed）
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       // 上拉加载更多
       loadMore() {
         this.getHomeGoods(this.currentType)
+      },
+      // 图片加载
+      swiperImageLoad( ){
+        console.log(this.$refs.tabControl.$el.offsetTop)
       },
 
       // 网络请求相关方法
@@ -148,13 +167,14 @@ export default {
     此时给home主页设置padding-top，可让轮播图完全显示
 */
 #home {
-  /* padding-top: 44px; */
   /* vh：视口 */
   height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
+
+  /* 在使用浏览器 */
   position: fixed;
   left: 0;
   top: 0;
@@ -172,4 +192,11 @@ export default {
   overflow: hidden;
   margin-top: 44px;
 }
+/* .fixed {
+  position: fixed;
+  left: 0;
+  top: 44px;
+  right: 0;
+} */
 </style>
+

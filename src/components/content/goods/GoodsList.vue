@@ -24,7 +24,6 @@ export default {
 
 <style>
 .goods {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
