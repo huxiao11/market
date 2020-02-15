@@ -41,8 +41,8 @@ export default {
   },
   methods: {
     // 监听滚动内容里的btn按钮
-    btnClick() {
-      console.log("btnClick");
+    divClick() {
+      console.log("divClick");
     }
   }
 };
