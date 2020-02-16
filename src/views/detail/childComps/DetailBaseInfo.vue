@@ -1,5 +1,5 @@
 <template>
-    <div class="base-info">
+    <div class="base-info" v-if="Object.keys(goods).length !== 0">
         <!-- 标题 -->
         <div class="info-title">{{goods.title}}</div>
         <!-- 价格 -->
@@ -21,7 +21,6 @@
                 <span>{{goods.services[index-1].name}}</span>
             </span>
         </div>
-
     </div> 
 </template>
 
@@ -35,11 +34,7 @@ export default {
                 return {}
             }
         }
-    },
-    upstate() {
-        console.log(this.goods.title)
     }
-
 }
 </script>
 
@@ -92,6 +87,7 @@ export default {
   font-size: 13px;
   color: #333;
   flex-wrap: wrap;
+  border-bottom: solid 4px #efefef;
 }
 .info-service-item {
   display: flex;

@@ -20,6 +20,6 @@
 
 <script>
 export default {
-//   name: 'Tabbar'
+  name: 'Tabbar'
 };
 </script>
