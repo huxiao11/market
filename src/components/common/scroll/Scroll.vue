@@ -10,6 +10,7 @@
 import BScroll from 'better-scroll'
 
 export default {
+    name: 'Scroll',
     props: {
         probeType: {
             type: Number,
@@ -27,14 +28,22 @@ export default {
     },
     mounted() {
         // 1、创建better-scroll对象
-        if (this.probeType === 2 || this.probeType === 3 ) {
+        // if (this.probeType === 2 || this.probeType === 3 ) {
+        //     this.scroll = new BScroll (this.$refs.wrapper, {
+        //     click: true,
+        //     // 如果不使用设置会影响性能，用时传递即可
+        //     probeType: this.probeType,
+        //     pullUpLoad: this.pullUpLoad
+        //     })
+        // }
+        
             this.scroll = new BScroll (this.$refs.wrapper, {
             click: true,
             // 如果不使用设置会影响性能，用时传递即可
             probeType: this.probeType,
             pullUpLoad: this.pullUpLoad
             })
-        }
+        
 
         // 2、监听滚动的位置
         this.scroll.on('scroll', (position) => {

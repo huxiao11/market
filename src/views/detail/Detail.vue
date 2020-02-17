@@ -1,11 +1,25 @@
 <template>
-    <div id="datail">
+    <div id="detail">
         <detail-nav-bar class="detail-nav"/>
-        <scroll class="content">
+        <scroll class="content" ref="scroll">
             <detail-swiper :top-images="topImages" 
                             v-if="topImages.length"/>
             <detail-base-info :goods="goods"/>
             <detail-shop-info :shop="shop"/>
+            <detail-goods-info :detail-info="detailInfo"
+                                @imgLength = "imgLength"/>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+            </ul>
         </scroll>
     </div>
 </template>
@@ -16,6 +30,7 @@ import DetailNavBar from './childComps/DetailNavBar'
 import DetailSwiper from './childComps/DetailSwiper'
 import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo'
+import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 
 // 引入公共组件
 import Scroll from 'components/common/scroll/Scroll'
@@ -30,7 +45,8 @@ export default {
             iid: null,
             topImages: [],
             goods: {},
-            shop: {}
+            shop: {},
+            detailInfo: {}
         }
     },
     components: {
@@ -38,7 +54,13 @@ export default {
         DetailSwiper,
         DetailBaseInfo,
         DetailShopInfo,
-        Scroll
+        Scroll,
+        DetailGoodsInfo
+    },
+    methods: {
+        imgLoad() {
+            this.$refs.scroll.refresh();
+        }
     },
     created() {
         // 1、保存传入放入iid
@@ -56,6 +78,9 @@ export default {
 
             // 3、获取详情页店铺信息
             this.shop = new Shop(data.shopInfo)
+
+            // 4、获取详情页商品信息
+            this.detailInfo = data.detailInfo
         })
     }
 }
@@ -66,6 +91,7 @@ export default {
 #detail {
     position: relative;
     z-index: 9;
+    background-color: #fff;
     height: 100vh;
 }
 
