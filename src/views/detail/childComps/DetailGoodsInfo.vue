@@ -40,12 +40,12 @@ export default {
             this.$emit('imgLength')
         }
        },
-       watch: {
-           detailInfo() {
-               return this.imgLength === this.detailInfo.detailImage[0].list.length
-           }
-       }
-   }
+   },
+   watch: {
+        detailInfo() {
+            return this.imgLength === this.detailInfo.detailImage[0].list.length
+        }
+    }
 }
 </script>
 
@@ -86,6 +86,7 @@ export default {
 }
 .detail-goods-info {
     padding: 20px 10px;   
+    border-bottom: 5px solid #efefef;
 }
 .detail-goods-info p{
     margin: 15px 0;
