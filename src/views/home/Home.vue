@@ -8,16 +8,14 @@
       class="tab-control"
       @tabClick="tabClick"
       ref="tabControl1"
-      v-show="isTabFixed"
-    />
+      v-show="isTabFixed"/>
     <scroll
       class="home-scroll"
       ref="scroll"
       :probe-type="3"
       @scroll="contentScroll"
       :pull-up-load="true"
-      @pullingUp="loadMore"
-    >
+      @pullingUp="loadMore">
       <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <recommend-view :recommends="recommends" />
       <feature-view />
@@ -75,13 +73,23 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      isShowTabControl: false
+      isShowTabControl: false,
+      saveY: 0
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
     }
+  },
+  activated() {
+    console.log(this.saveY)
+    
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getCurrentY()
   },
   created() {
     // 1.请求多个数据
@@ -123,7 +131,7 @@ export default {
           this.currentType = "sell";
           break;
       }
-            this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
     // 回到顶部
