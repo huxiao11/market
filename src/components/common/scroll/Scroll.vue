@@ -59,6 +59,9 @@ export default {
             })
         }
     },
+    computed: {
+        
+    },
     methods: {
         // 滚动到指定的位置！！！！
         scrollTo(x, y, time = 300) {

@@ -9,8 +9,7 @@
       @tabClick="tabClick"
       ref="tabControl1"
       v-show="isTabFixed"/>
-    <scroll
-      class="home-scroll"
+    <scroll class="home-scroll"
       ref="scroll"
       :probe-type="3"
       @scroll="contentScroll"
@@ -47,7 +46,8 @@ import FeatureView from "./childComps/FeatureView";
 
 // 引入请求数据
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+// import {debounce} from 'common/utils'
+import {itemListenerMixin} from 'common/mixin'
 
 export default {
   components: {
@@ -60,6 +60,7 @@ export default {
     RecommendView,
     FeatureView
   },
+  mixins: [itemListenerMixin],
   data() {
     return {
       banners: [],
@@ -74,7 +75,7 @@ export default {
       tabOffsetTop: 0,
       isTabFixed: false,
       isShowTabControl: false,
-      saveY: 0
+      saveY: 0,
     };
   },
   computed: {
@@ -84,12 +85,17 @@ export default {
   },
   activated() {
     console.log(this.saveY)
-    
+
     this.$refs.scroll.scrollTo(0, this.saveY, 0)
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // 1、保存Y值
     this.saveY = this.$refs.scroll.getCurrentY()
+
+    // 2、取消全局事件监听
+    this.$bus.off('itemImgLoad', this.itemImgListener)
+
   },
   created() {
     // 1.请求多个数据
@@ -104,11 +110,7 @@ export default {
   },
 
   mounted() {
-    // 1、图片加载完成的事件监听
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    
 
     // 2、获取tabControl的offsetTop,组件没有offsetTop的属性，
     // 所有组件都有$el的属性：用于获取组件中的元素
@@ -131,6 +133,7 @@ export default {
           this.currentType = "sell";
           break;
       }
+      // 保持两个currentIndex的值一样
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },

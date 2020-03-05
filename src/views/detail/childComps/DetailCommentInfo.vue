@@ -34,9 +34,9 @@ export default {
     },
     filters: {
         getTime(value) {
-            // 1、转换成date对象
+            // 1、将时间chuo转换成date对象
             const date = new Date(value * 1000)
-            // 2、转换时间格式
+            // 2、将date格式化
             return formatDate(date,'yyyy-MM-dd hh:mm:ss')
         }
     }

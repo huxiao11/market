@@ -27,7 +27,15 @@ export default {
    methods: {
     //  处理首页滚动bug，监听图片加载完毕
      imageLoad() {
-       this.$bus.$emit('itemImageLoad')
+
+      //  思路1
+      //  if (this.$route.path.indexOf('/home')) {
+      //     this.$bus.$emit('homeItemImageLoad')
+      //  } else if (this.$route.path.indexOf('/detail')) {
+      //     this.$bus.$emit('detailItemImageLoad')
+      //  }
+
+      this.$bus.$emit('itemImgLoad')
      },
      itemClick() {
        this.$router.push('/detail/' + this.goodsItem.iid)
